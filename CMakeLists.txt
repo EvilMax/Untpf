@@ -7,8 +7,18 @@ ENDIF(COMMAND cmake_policy)
 
 set(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_BUILD_TYPE Release)
-SET(CMAKE_CXX_FLAGS_RELEASE "-Wall -fexceptions -O2")
+
 ADD_DEFINITIONS(-DUNICODE)
 ADD_DEFINITIONS(-D_UNICODE)
 
-ADD_EXECUTABLE(untpf untpf.cpp zip.cpp unzip.cpp)
+IF(WIN32)
+	SET(MZ_ZSTD OFF CACHE BOOL "enable ZSTD functionality" FORCE)
+	SET(MZ_BZIP2 OFF CACHE BOOL "enable BZIP2 functionality" FORCE)
+	SET(ZLIB_FORCE_FETCH ON CACHE BOOL "enable ZSTD functionality" FORCE)
+ENDIF(WIN32)
+
+ADD_SUBDIRECTORY(minizip)
+
+ADD_EXECUTABLE(untpf untpf.cpp TpfFile.h TpfFile.cpp Decryptor.h Decryptor.cpp)
+
+TARGET_LINK_LIBRARIES(untpf minizip)

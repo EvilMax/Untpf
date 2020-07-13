@@ -1,2 +1,2 @@
-# Untpf bulid directory
-Use it for build output or any other if you want.
+# Untpf
+Build directory. You can use it for building untpf utility
